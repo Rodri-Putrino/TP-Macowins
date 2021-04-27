@@ -2,6 +2,10 @@ package ar.edu.utn.frba.dds.macowins;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PrendaTest {
@@ -31,22 +35,56 @@ public class PrendaTest {
   @Test
   public void elPrecioDeUnPantalonEnPromocionEsSuPrecioBaseMenosSuDecuento() {
     assertEquals(pantalonEnPromocion(1500, 200).precio(), 1300, 0);
-    assertEquals(pantalonEnPromocion(1500, 100).precio(), 1400, 0);
+    assertEquals(pantalonEnPromocion(1600, 100).precio(), 1500, 0);
+  }
+
+  @Test
+  public void elImporteDeUnaVentaEnEfectivoEsLaSumaDeLosImportesDeSusPrendas() {
+    assertEquals(tresCamisasNuevasPagadasEnEfectivo(1500).importe(), 4500);
+    assertEquals(tresCamisasNuevasPagadasEnEfectivo(3000).importe(), 9000);
+  }
+
+  @Test
+  public void elImporteDeUnaVentaConTarjetaEsLaSumaDeLosImportesDeSusPrendasMasUnRecargo() {
+    assertEquals(tresCamisasNuevasPagadasConTarjeta(1500, 6, 5).importe(), 4575);
   }
 
   private Prenda pantalonEnPromocion(int precioBase, int descuento) {
-    // TODO completar
-    return null;
+    Prenda pantalonEnPromocion = new Prenda(precioBase, new Promocion(descuento), TipoPrenda.PANTALON);
+    return pantalonEnPromocion;
   }
 
-
   private Prenda camisaNueva(double precioBase) {
-    // TODO completar
-    return null;
+    Prenda camisaNueva = new Prenda(precioBase, new Nueva(), TipoPrenda.CAMISA);
+    return camisaNueva;
   }
 
   private Prenda sacoEnLiquidacion(double precioBase) {
-    // TODO completar
-    return null;
+    Prenda sacoEnLiquidacion = new Prenda(precioBase, new Liquidacion(), TipoPrenda.SACO);
+    return sacoEnLiquidacion;
+  }
+
+  private Venta tresCamisasNuevasPagadasEnEfectivo(double precioBase) {
+    Prenda primeraCamisa = new Prenda(precioBase, new Nueva(), TipoPrenda.CAMISA);
+    Prenda segundaCamisa = new Prenda(precioBase, new Nueva(), TipoPrenda.CAMISA);
+    Prenda terceraCamisa = new Prenda(precioBase, new Nueva(), TipoPrenda.CAMISA);
+    List<Prenda> prendas = new ArrayList<>();
+    prendas.add(primeraCamisa);
+    prendas.add(segundaCamisa);
+    prendas.add(terceraCamisa);
+    Venta tresCamisasNuevas = new Venta(prendas, new Date(), new Efectivo());
+    return tresCamisasNuevas;
+  }
+
+  private Venta tresCamisasNuevasPagadasConTarjeta(double precioBase, Integer cantidadDeCuotas, double coeficiente) {
+    Prenda primeraCamisa = new Prenda(precioBase, new Nueva(), TipoPrenda.CAMISA);
+    Prenda segundaCamisa = new Prenda(precioBase, new Nueva(), TipoPrenda.CAMISA);
+    Prenda terceraCamisa = new Prenda(precioBase, new Nueva(), TipoPrenda.CAMISA);
+    List<Prenda> prendas = new ArrayList<>();
+    prendas.add(primeraCamisa);
+    prendas.add(segundaCamisa);
+    prendas.add(terceraCamisa);
+    Venta tresCamisasNuevas = new Venta(prendas, new Date(), new Tarjeta(cantidadDeCuotas, coeficiente));
+    return tresCamisasNuevas;
   }
 }
