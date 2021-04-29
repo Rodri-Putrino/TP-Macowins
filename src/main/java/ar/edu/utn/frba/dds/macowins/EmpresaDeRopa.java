@@ -1,12 +1,13 @@
 package ar.edu.utn.frba.dds.macowins;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class EmpresaDeRopa {
   private List<Venta> ventas;
 
-  Double gananciaDelDia(Date dia){
+  Double gananciaDelDia(LocalDate dia){
     return ventas.stream().filter(venta -> venta.fecha(dia))
         .mapToDouble(venta -> venta.importe()).sum();
   }
